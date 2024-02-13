@@ -1,6 +1,6 @@
 const db = require('../models');
 const OffreSpecial = db.offreSpecial;
-const Service = db.service;
+const Service = require('../models/service.model');
 
 exports.create = async(req, res) => {
     if (!req.body.idService || !req.body.dateDebut || !req.body.dateFin || !req.body.reduction) {
