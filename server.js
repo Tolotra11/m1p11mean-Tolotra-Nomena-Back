@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
+
+require('dotenv').config();
 
 var corsOptions = {
     origin: "http://localhost:4200"
@@ -30,11 +31,6 @@ var corsOptions = {
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
-  
-  // simple route
-  app.get("/", (req, res) => {
-    res.json({ message: "Welcome to bezkoder application." });
-  });
   
   // set port, listen for requests
   const PORT = process.env.PORT || 1672;

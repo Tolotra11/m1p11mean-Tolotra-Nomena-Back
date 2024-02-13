@@ -12,4 +12,5 @@ db.offreSpecial = require("./offreSpecial.model.js")(mongoose);
 db.rdv = require("./rdv.model.js")(mongoose);
 db.service = require("./service.model.js")(mongoose);
 db.user = require("./user.model.js")(mongoose);
+db.device = require("./device.model.js")(mongoose);
 module.exports = db;
