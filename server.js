@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-
+const reminder = require('./app/service/rappel.service');
 require('dotenv').config();
 
 var corsOptions = {
@@ -28,6 +28,12 @@ var corsOptions = {
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+  //Rappel tout les jours à 6 heure du matin
+  cron.schedule('0 6 * * *', () => {
+      console.log('reminder');
+      reminder.sendReminder();
+  });
+  
   
   require("./app/routes/offreSpecial.routes")(app);
   require("./app/routes/device.routes")(app);
