@@ -10,9 +10,23 @@ let transporter = nodemailer.createTransport({
         pass: pass
     }
 });
-
-
-module.exports = {
-    transporter
+//sendEmail
+const emailSender = (sender, receiver, subject , content) => {
+    let mailOptions = {
+        from: sender,
+        to: receiver,
+        subject: subject,
+        text: content
+    };
+    // Envoyer l'e-mail
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            throw error;
+        } 
+    });
 }
 
+module.exports = {
+    transporter,
+    emailSender
+}
