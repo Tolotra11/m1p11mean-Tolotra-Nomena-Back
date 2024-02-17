@@ -36,6 +36,7 @@ var corsOptions = {
   });
   
   
+  require("./app/routes/authentification.routes")(app);
   require("./app/routes/offreSpecial.routes")(app);
   require("./app/routes/device.routes")(app);
   // set port, listen for requests
