@@ -19,7 +19,7 @@ exports.create = async(req, res) => {
             dateFin:req.body.dateFin
         }
     );  
-    const service = await Service.findOne({idService:req.body.idService , etat: 5});
+    const service = await Service.findOne({_id:req.body.idService , etat: 5});
     if(!service){
         res.status(404).send({message: "Le service n'existe pas ou n'est plus actif"});
         return;

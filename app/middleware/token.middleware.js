@@ -13,6 +13,7 @@ const checkTokenExistance = (request , response, next) => {
         );
         return;
     }
+    request.token = token;
     next();
 }
 
@@ -27,6 +28,7 @@ const decryptToken = (request, response, next) => {
             return;
         }
         request.decoded = decoded;
+       // console.log(  request.decoded)
         next();
     })
    
