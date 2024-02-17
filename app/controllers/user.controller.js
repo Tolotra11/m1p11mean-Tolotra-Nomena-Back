@@ -87,3 +87,23 @@ exports.loginManager = async (request, response)=> {
     }
 }
 
+exports.registerClient =async (request, response) =>{
+    const {nom,prenom,mail,mdp,confirmMdp} = request.body;
+    if(mdp !== confirmMdp){
+        response.status(ERROR_STATUS_CODE.BAD_REQUEST).send({
+            message : 'Veuillez reconfirmer votre mot de passe'
+        });
+        return;
+    }
+    try{
+        const newClient = await User.register(nom,prenom,mail,mdp,10);
+        response.send(newClient);
+    }
+    catch(error){
+        response.status(ERROR_STATUS_CODE.BAD_REQUEST).send({
+            message : error.message
+        });
+        return;
+    }
+}
+
