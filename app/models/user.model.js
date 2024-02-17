@@ -59,5 +59,37 @@ module.exports = (mongoose) => {
        throw error;
     }
  }
+
+ User.register = async (nom, prenom, mail, mdp, role) => {
+  try{
+      //Verification si email existe
+      const verifyExistingEmail = await User.findOne({mail:mail, role:role});
+      if(verifyExistingEmail){
+        throw new Error('Email déjà existante');
+      }
+      //Verification format email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(mail)) {
+        throw new Error('Email non valide');
+      }
+      //Verification longueur du mot de passe
+      if (mdp.length < 8 ){
+        throw new Error('Mot de passe trop courte');
+      }
+      const hashedPassword = await bcryptjs.hash(mdp,10);
+      const newUser = new User({
+          nom: nom,
+          prenom:prenom,
+          mail:mail,
+          mdp:hashedPassword,
+          role:role
+      });
+      await newUser.save();
+      return newUser;
+  }
+  catch(error){
+    throw error;
+  }
+}  
   return User;
 };
