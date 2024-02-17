@@ -41,5 +41,23 @@ module.exports = (mongoose) => {
   });
 
   const User = mongoose.model("user", userSchema);
+  User.login  = async (email, password, role) => {
+    try {
+       const user = await User.findOne({mail:email, role : role});
+       if(!user){
+         throw new Error('Email non existante');
+       }
+       const passwordMatch = await bcryptjs.compare(password, user.mdp);
+       if (passwordMatch) {
+           return user;
+       }
+       else{
+         throw new Error('Adresse email ou mot de passe incorrect');
+       }
+    }
+    catch(error){
+       throw error;
+    }
+ }
   return User;
 };
