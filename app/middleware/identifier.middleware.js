@@ -26,3 +26,9 @@ const getInfoManager = (request, response, next) => {
     }
     next();
 }
+
+module.exports = {
+    getInfoClient,
+    getInfoEmploye,
+    getInfoManager
+}
