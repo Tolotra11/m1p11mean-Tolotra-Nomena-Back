@@ -5,6 +5,7 @@ const getInfoClient  = async(request, response, next) => {
         response.status(ERROR_STATUS_CODE.UNAUTHORIZED).send({
             message:  ERROR.TOKEN.INVALID_OR_EXPIRED_TOKEN
         }) 
+        return;
     }
     next();
 }
@@ -14,6 +15,7 @@ const getInfoEmploye = (request, response, next) => {
         response.status(ERROR_STATUS_CODE.UNAUTHORIZED).send({
             message:  ERROR.TOKEN.INVALID_OR_EXPIRED_TOKEN
         }) 
+        return;
     }
     next();
 }
@@ -23,6 +25,7 @@ const getInfoManager = (request, response, next) => {
         response.status(ERROR_STATUS_CODE.UNAUTHORIZED).send({
             message:  ERROR.TOKEN.INVALID_OR_EXPIRED_TOKEN
         }) 
+        return;
     }
     next();
 }
