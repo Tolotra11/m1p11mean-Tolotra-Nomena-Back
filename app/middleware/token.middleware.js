@@ -28,7 +28,6 @@ const decryptToken = (request, response, next) => {
             return;
         }
         request.decoded = decoded;
-       // console.log(  request.decoded)
         next();
     })
    
