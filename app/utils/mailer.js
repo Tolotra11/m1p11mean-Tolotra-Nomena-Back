@@ -12,11 +12,12 @@ let transporter = nodemailer.createTransport({
 });
 //sendEmail
 const emailSender = (sender, receiver, subject , content) => {
+    
     let mailOptions = {
         from: sender,
         to: receiver,
         subject: subject,
-        text: content
+        html: content
     };
     // Envoyer l'e-mail
     transporter.sendMail(mailOptions, function(error, info){
