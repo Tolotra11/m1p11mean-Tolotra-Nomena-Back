@@ -41,7 +41,8 @@ var corsOptions = {
   require("./app/routes/device.routes")(app);
   require("./app/routes/manager.routes")(app);
   require("./app/routes/user.routes")(app);
-
+  require("./app/routes/service.routes")(app);
+  
   // set port, listen for requests
   const PORT = process.env.PORT || 1675;
   app.listen(PORT, () => {
