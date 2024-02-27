@@ -13,6 +13,7 @@ const checkTokenExistance = (request , response, next) => {
         );
         return;
     }
+    request.token = token;
     next();
 }
 

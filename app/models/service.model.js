@@ -11,12 +11,12 @@ const serviceSchema = new mongoose.Schema({
       min: 0,
     },
     delai: {
-      type: String, 
+      type: Number, 
       validate: {
         validator: function (value) {
-          return /^([01]\d|2[0-3]):([0-5]\d)$/.test(value);
+          return value > 0;
         },
-        message: 'Le délai doit être au format "HH:MM"',
+        message: 'Le délai doit être au supérieur à 0',
       },
     },
     commission: Number,
@@ -24,6 +24,12 @@ const serviceSchema = new mongoose.Schema({
         type: Number,
         default: 5
     }
+  });
+
+  serviceSchema.method("toJSON", function () {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
   });
 
 const Service = mongoose.model('Service', serviceSchema);

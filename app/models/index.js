@@ -13,4 +13,7 @@ db.rdv = require("./rdv.model.js")(mongoose);
 db.service = require("./service.model.js")(mongoose);
 db.user = require("./user.model.js")(mongoose);
 db.device = require("./device.model.js")(mongoose);
+db.preferenceEmploye=require("./preferenceEmploye.model.js")(mongoose);
+db.preferenceServices=require("./preferenceService.model.js")(mongoose);
+
 module.exports = db;
