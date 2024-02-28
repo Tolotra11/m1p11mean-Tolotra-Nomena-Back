@@ -2,7 +2,7 @@ const { ERROR_STATUS_CODE } = require("../constant/Error.constant");
 const db = require("../models");
 const Rdv = db.rdv;
 const Service = require('../models/service.model');
-
+const Client = db.user;
 const mesRdv = async(req,res) =>{
   const idEmploye = req.decoded.userId;
   const currentDate = new Date(); // Date d'aujourd'hui
@@ -11,13 +11,14 @@ const mesRdv = async(req,res) =>{
     const rdvs = await Rdv.find({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});    
     const serviceIds = rdvs.map(rdv => rdv.idService);
     const services = await Service.find({ _id: { $in: serviceIds } });
-
-    const rdvsWithServices = rdvs.map(rdv => {
+    const clientsIds = rdvs.map(rdv => rdv.idClient);
+    const clients = await Client.find({_id:{$in: clientsIds}});
+    const rdvsWithServicesAndClient = rdvs.map(rdv => {
         const service = services.find(service => service.id == rdv.idService);
-        return { ...rdv.toObject(), service };
+        const client = clients.find(client=>client.id==rdv.idClient);
+        return { ...rdv.toObject(), service, client };
     });
-    console.log(rdvsWithServices);
-    res.send(rdvsWithServices);
+    res.send(rdvsWithServicesAndClient);
   } catch (error) {
       console.error(error);
       res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
