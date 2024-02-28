@@ -13,7 +13,7 @@ module.exports = app => {
 
     router.post('/services',serviceController.createService);
     router.put('/services/:id',serviceController.updateService);
-    router.put('/services/:id',serviceController.deleteService);
+    router.delete('/services/:id',serviceController.deleteService);
 
     app.use('/api/managers', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,identifierMiddleware.getInfoManager,router);
 }
