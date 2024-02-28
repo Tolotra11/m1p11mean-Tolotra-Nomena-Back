@@ -2,22 +2,33 @@ const { ERROR_STATUS_CODE } = require("../constant/Error.constant");
 const db = require("../models");
 const Rdv = db.rdv;
 const Service = require('../models/service.model');
-const Client = db.user;
+
+const getTask = async(req,res) =>{
+  const idEmploye = req.decoded.userId;
+  const currentDate = new Date(); // Date d'aujourd'hui
+  currentDate.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(currentDate);
+  endOfDay.setHours(23, 59, 59, 999);
+  try {
+    const rdvEnCours = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});
+    const rdvFini = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:10, dateheuredebut: { $gte: currentDate, $lte: endOfDay}});
+    res.send({
+      todo: rdvEnCours,
+      done: rdvFini
+    });
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
+  }
+}
+
+
 const mesRdv = async(req,res) =>{
   const idEmploye = req.decoded.userId;
   const currentDate = new Date(); // Date d'aujourd'hui
   currentDate.setHours(0, 0, 0, 0);
   try {
-    const rdvs = await Rdv.find({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});    
-    const serviceIds = rdvs.map(rdv => rdv.idService);
-    const services = await Service.find({ _id: { $in: serviceIds } });
-    const clientsIds = rdvs.map(rdv => rdv.idClient);
-    const clients = await Client.find({_id:{$in: clientsIds}});
-    const rdvsWithServicesAndClient = rdvs.map(rdv => {
-        const service = services.find(service => service.id == rdv.idService);
-        const client = clients.find(client=>client.id==rdv.idClient);
-        return { ...rdv.toObject(), service, client };
-    });
+    const rdvsWithServicesAndClient = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});
     res.send(rdvsWithServicesAndClient);
   } catch (error) {
       console.error(error);

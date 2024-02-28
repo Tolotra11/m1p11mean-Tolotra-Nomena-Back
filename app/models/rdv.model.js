@@ -1,3 +1,4 @@
+
 module.exports = (mongoose) => {
   const rdvSchema = mongoose.Schema(
     {
@@ -47,5 +48,25 @@ module.exports = (mongoose) => {
   });
 
   const Rdv = mongoose.model("rdv", rdvSchema);
+  Rdv.getRdv = async(condition)=>{
+    const db = require('./index');
+    const Service = require('../models/service.model');
+    const Client = db.user;
+    try {
+      const rdvs = await Rdv.find(condition);    
+      const serviceIds = rdvs.map(rdv => rdv.idService);
+      const services = await Service.find({ _id: { $in: serviceIds } });
+      const clientsIds = rdvs.map(rdv => rdv.idClient);
+      const clients = await Client.find({_id:{$in: clientsIds}});
+      const rdvsWithServicesAndClient = rdvs.map(rdv => {
+          const service = services.find(service => service.id == rdv.idService);
+          const client = clients.find(client=>client.id==rdv.idClient);
+          return { ...rdv.toObject(), service, client };
+      });
+      return rdvsWithServicesAndClient;
+    } catch (error) {
+      throw error;
+    }
+  };
   return Rdv;
 };
