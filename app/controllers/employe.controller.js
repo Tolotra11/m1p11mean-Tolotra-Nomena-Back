@@ -178,6 +178,7 @@ const modifierRdv = async (req, res) => {
 };
 
 module.exports = {
+  getTask,
   mesRdv,
   afficherRdv,
   insererRdv,

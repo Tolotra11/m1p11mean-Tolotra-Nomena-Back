@@ -17,5 +17,7 @@ module.exports = app => {
       );
 
       router.get('/rdvs',employeeController.mesRdv);
+
+      router.get('/tasks',employeeController.getTask);
     app.use('/api/employes', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,identifierMiddleware.getInfoEmploye,router);
 }
