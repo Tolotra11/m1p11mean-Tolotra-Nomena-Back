@@ -15,6 +15,5 @@ module.exports = app => {
     router.post('/services',serviceController.createService);
     router.put('/services/:id',serviceController.updateService);
     router.delete('/services/:id',serviceController.deleteService);
-    router.get('/services/search',serviceController.searchService);
     app.use('/api/managers', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,identifierMiddleware.getInfoManager,router);
 }
