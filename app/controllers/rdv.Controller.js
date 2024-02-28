@@ -5,6 +5,7 @@ const moment=require('moment');
 const { ObjectId } = require('mongodb');
 const { ERROR_STATUS_CODE } = require('../constant/Error.constant');
 module.exports={
+    
     getListOffreSpecial(request,response){
         models.offreSpecial.find().exec()
         .then(res=>{
