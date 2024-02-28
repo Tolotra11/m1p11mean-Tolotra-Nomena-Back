@@ -23,5 +23,6 @@ module.exports = app => {
       router.get('/tasks/done', employeeController.validerRdv);
 
       router.get('/unaivalability', employeeController.getIndisponibilite);
+      
     app.use('/api/employes', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,identifierMiddleware.getInfoEmploye,router);
 }

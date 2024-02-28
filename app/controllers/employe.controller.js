@@ -75,17 +75,17 @@ const insererRdv = async (req, res) => {
       status
     } = req.body;
 
-    // if (
-    //   !idEmploye ||
-    //   !dateheuredebut ||
-    //   !dateheurefin ||
-    //   status === undefined
-    // ) {
-    //   return res.status(ERROR_STATUS_CODE.BAD_REQUEST).json({
-    //     message:
-    //       "Les champs idEmploye, dateheuredebut, dateheurefin et status sont obligatoires.",
-    //   });
-    // }
+    if (
+      !idEmploye ||
+      !dateheuredebut ||
+      !dateheurefin ||
+      status === undefined
+    ) {
+      return res.status(ERROR_STATUS_CODE.BAD_REQUEST).json({
+        message:
+          "Les champs idEmploye, dateheuredebut, dateheurefin et status sont obligatoires.",
+      });
+    }
      if (new Date(dateheuredebut) >= new Date(dateheurefin)) {
       return res.status(400).json({
         message: "La date de début doit être antérieure à la date de fin.",
