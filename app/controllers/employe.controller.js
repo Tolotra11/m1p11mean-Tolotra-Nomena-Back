@@ -12,9 +12,14 @@ const getTask = async(req,res) =>{
   try {
     const rdvEnCours = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});
     const rdvFini = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:10, dateheuredebut: { $gte: currentDate, $lte: endOfDay}});
+    let commission = 0;
+    rdvFini.forEach(element => {
+        commission += element.prix * (element.service.commission/100.0);
+    });
     res.send({
       todo: rdvEnCours,
-      done: rdvFini
+      done: rdvFini,
+      commission: commission.toFixed(2)
     });
   } catch (error) {
       console.error(error);
