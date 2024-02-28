@@ -11,9 +11,10 @@ module.exports = app => {
     router.delete('/users/:id',userController.deleteUser);
     router.put('/users/:id',userController.updateUser);
 
+    router.get('/services/:id',serviceController.getServiceDetails);
     router.post('/services',serviceController.createService);
     router.put('/services/:id',serviceController.updateService);
     router.delete('/services/:id',serviceController.deleteService);
-
+    router.get('/services/search',serviceController.searchService);
     app.use('/api/managers', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,identifierMiddleware.getInfoManager,router);
 }
