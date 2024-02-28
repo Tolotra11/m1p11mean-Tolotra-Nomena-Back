@@ -106,6 +106,7 @@ async function searchService(req, res) {
 
     res.json(services);
   } catch (error) {
+    console.error(error);
     res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message: error.message });
   }
 }
