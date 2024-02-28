@@ -214,7 +214,22 @@ const validerRdv = async(req, res) => {
   }    
 }
 
+const getIndisponibilite = async(req,res) =>{
+  const idEmploye = req.decoded.userId;
+  const currentDate = new Date(); // Date d'aujourd'hui
+  currentDate.setHours(0, 0, 0, 0);
+  try {
+    const indisponibilité = await Rdv.getRdv({idEmploye: idEmploye,status:-10,etat:1, dateheuredebut: { $gte: currentDate }});
+    res.send(indisponibilité);
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
+  }
+}
+
+
 module.exports = {
+  getIndisponibilite,
   validerRdv,
   getTask,
   mesRdv,
