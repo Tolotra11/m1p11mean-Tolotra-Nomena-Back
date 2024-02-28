@@ -177,7 +177,40 @@ const modifierRdv = async (req, res) => {
   }
 };
 
+const validerRdv = async(req, res) => {
+  try {
+    const { id } = req.query;
+    const { etat } = req.query;
+
+    const rdv = await Rdv.findById(id);
+    if (!rdv) {
+      return res
+        .status(ERROR_STATUS_CODE.NOT_FOUND)
+        .json({ message: "Rendez-vous non trouvé pour l'ID fourni" });
+    }
+
+    const result = await Rdv.updateOne(
+      { _id: id },
+      { $set: { etat: etat } }
+    );
+
+    if (result.nModified === 0) {
+      return res
+        .status(ERROR_STATUS_CODE.BAD_REQUEST)
+        .json({ message: "Aucun rendez-vous n'a été modifié" });
+    }
+
+    return res.json({ message: "Rendez-vous modifié avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la modification du rendez-vous :", error);
+    return res
+      .status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json({ message: "Erreur lors de la modification du rendez-vous" });
+  }    
+}
+
 module.exports = {
+  validerRdv,
   getTask,
   mesRdv,
   afficherRdv,
