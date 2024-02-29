@@ -40,7 +40,7 @@ async function updateService(req, res) {
 async function deleteService(req, res) {
   try {
     const serviceId = req.params.id;
-
+    console.log(serviceId);
     await Service.findByIdAndUpdate(serviceId, {etat: 0});
 
     res.json({ message: 'Service supprimé avec succès' });
