@@ -4,5 +4,6 @@ module.exports = app =>{
 
     var router = require("express").Router();
     router.post("/",device.create);
+    router.delete("/",device.delete);
     app.use('/api/devices', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,router);
 }

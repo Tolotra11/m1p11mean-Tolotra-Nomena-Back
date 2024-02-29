@@ -1,9 +1,11 @@
+require('dotenv').config();
+process.env.TZ = "Africa/Antananarivo";
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const cron = require('node-cron');
 const reminder = require('./app/service/rappel.service');
-require('dotenv').config();
+
 
 var corsOptions = {
     origin: "http://localhost:4200"
@@ -29,10 +31,17 @@ var corsOptions = {
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+
   //Rappel tout les jours à 6 heure du matin
-  cron.schedule('0 6 * * *', () => {
+  cron.schedule('0 3 * * *', () => {
       console.log('reminder');
-      reminder.sendReminder();
+      try{
+        reminder.sendReminder();
+      }
+      catch(error){
+        console.error("Une erreur inattendue s'est produite");
+      }
+      
   });
   
   
@@ -47,7 +56,7 @@ var corsOptions = {
   require("./app/routes/depense.routes")(app);
   require("./app/routes/statistique.routes")(app);
   // set port, listen for requests
-  const PORT = process.env.PORT || 1675;
+  const PORT = process.env.PORT || 1672;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
   });

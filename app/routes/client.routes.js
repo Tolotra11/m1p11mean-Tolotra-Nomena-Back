@@ -7,6 +7,7 @@ module.exports = app => {
     const horaireController = require('../controllers/horaire.controller');
     const preferenceEmploye = require("../controllers/preferenceEmploye.controller");
     const preferenceService = require("../controllers/preferenceService.controller");
+    const offreSpecial = require('../controllers/offreSpecial.controller');
     
 
     router.post('/rdv/emp',rdv.getListAvailableEmploye);
@@ -14,7 +15,8 @@ module.exports = app => {
     router.get('/rdv/list',rdv.getListRDV);
     router.delete('/rdv/delete',rdv.deleteRdv);
     router.get('/rdvs',rdv.getListRDV);
-    
+    router.get('/rdv/offreSpecial',offreSpecial.findAll);
+
     router.get('/horaire/list',horaireController.getListHoraire);
     
     router.get('/services/pref',preferenceService.GetListPreferenceService);

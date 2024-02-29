@@ -2,6 +2,46 @@ const { ERROR_STATUS_CODE } = require("../constant/Error.constant");
 const db = require("../models");
 const Rdv = db.rdv;
 const Service = require('../models/service.model');
+const User = db.user;
+
+const getTask = async(req,res) =>{
+  const idEmploye = req.decoded.userId;
+  const currentDate = new Date(); // Date d'aujourd'hui
+  currentDate.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(currentDate);
+  endOfDay.setHours(23, 59, 59, 999);
+  try {
+    const rdvEnCours = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});
+    const rdvFini = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:10, dateheuredebut: { $gte: currentDate, $lte: endOfDay}});
+    let commission = 0;
+    rdvFini.forEach(element => {
+        commission += element.prix * (element.service.commission/100.0);
+    });
+    res.send({
+      todo: rdvEnCours,
+      done: rdvFini,
+      commission: commission.toFixed(2)
+    });
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
+  }
+}
+
+
+const mesRdv = async(req,res) =>{
+  const idEmploye = req.decoded.userId;
+  const currentDate = new Date(); // Date d'aujourd'hui
+  currentDate.setHours(0, 0, 0, 0);
+  try {
+    const rdvsWithServicesAndClient = await Rdv.getRdv({idEmploye: idEmploye,status:10,etat:1, dateheuredebut: { $gt: currentDate }});
+    res.send(rdvsWithServicesAndClient);
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
+  }
+}
+
 
 const afficherRdv = async (req,res) => {
   const idEmploye = req.decoded.userId;
@@ -143,7 +183,80 @@ const modifierRdv = async (req, res) => {
   }
 };
 
+const validerRdv = async(req, res) => {
+  try {
+    const { id } = req.query;
+    const { etat } = req.query;
+
+    const rdv = await Rdv.findById(id);
+    if (!rdv) {
+      return res
+        .status(ERROR_STATUS_CODE.NOT_FOUND)
+        .json({ message: "Rendez-vous non trouvé pour l'ID fourni" });
+    }
+
+    const result = await Rdv.updateOne(
+      { _id: id },
+      { $set: { etat: etat } }
+    );
+
+    if (result.nModified === 0) {
+      return res
+        .status(ERROR_STATUS_CODE.BAD_REQUEST)
+        .json({ message: "Aucun rendez-vous n'a été modifié" });
+    }
+
+    return res.json({ message: "Rendez-vous modifié avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la modification du rendez-vous :", error);
+    return res
+      .status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json({ message: "Erreur lors de la modification du rendez-vous" });
+  }    
+}
+
+const getIndisponibilite = async(req,res) =>{
+  const idEmploye = req.decoded.userId;
+  const currentDate = new Date(); // Date d'aujourd'hui
+  currentDate.setHours(0, 0, 0, 0);
+  try {
+    const indisponibilité = await Rdv.getRdv({idEmploye: idEmploye,status:-10,etat:1, dateheuredebut: { $gte: currentDate }});
+    res.send(indisponibilité);
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
+  }
+}
+const deleteRdv = async(request,response)=>{
+  try{
+      const idRdv=request.params.id;
+      await Rdv.deleteOne({_id:idRdv});
+      response.status(200).json({"message":"Suppression effectuée avec succès"});
+  }
+  catch(error){
+      response.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:error.message});
+  }
+  
+}
+
+const currentProfil = async (request, response) => {
+  try {
+    const userId = request.decoded.userId;
+    const user = await User.findById(userId);
+    response.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
+  currentProfil,
+  deleteRdv,
+  getIndisponibilite,
+  validerRdv,
+  getTask,
+  mesRdv,
   afficherRdv,
   insererRdv,
   modifierRdv,

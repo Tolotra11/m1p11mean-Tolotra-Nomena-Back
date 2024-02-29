@@ -4,6 +4,7 @@ module.exports = app => {
     var tokenMiddleware = require('../middleware/token.middleware');
 
     router.get('/listeservices', serviceController.getAllServices);
+    router.get('/search',serviceController.searchService);
 
     app.use('/api/services', tokenMiddleware.checkTokenExistance,tokenMiddleware.decryptToken,router);
 }

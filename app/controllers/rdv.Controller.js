@@ -5,6 +5,7 @@ const moment=require('moment');
 const { ObjectId } = require('mongodb');
 const { ERROR_STATUS_CODE } = require('../constant/Error.constant');
 module.exports={
+    
     getListOffreSpecial(request,response){
         models.offreSpecial.find().exec()
         .then(res=>{
@@ -96,10 +97,9 @@ module.exports={
         })
     },
 
-
-
     deleteRdv(request,response){
-        const idRdv=request.query.idRdv;
+        const idRdv=request.query.id;
+        console.log(idRdv);
         const objectId = new ObjectId(idRdv);  
         models.rdv.deleteOne({_id:objectId}).exec()
         .then(res=>{

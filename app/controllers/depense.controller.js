@@ -14,6 +14,12 @@ async function getAllDepenses(req, res) {
 
 async function createDepense(req, res) {
     try {
+      // const providedDate = new Date(req.body.date);
+      // const currentDate = new Date();
+      // // if(providedDate > currentDate){
+      //   res.status(ERROR_STATUS_CODE.BAD_REQUEST).send({ message: "Date doit être inférieur ou égale à date d'ajourd'hui" });
+      //   return;
+      // }
       const newDepense = new Depense(req.body); 
   
       await newDepense.save();

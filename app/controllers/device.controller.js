@@ -16,3 +16,16 @@ exports.create = async(req,res) => {
     }
     
 }
+
+exports.delete = async(req,res) => {
+    try{
+        const auth_token = req.token;
+        await Device.deleteOne({auth_token: auth_token});
+        res.status(200).json({ message: 'Dépense supprimé avec succès' });
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).send({message:error.message});
+    }
+    
+}

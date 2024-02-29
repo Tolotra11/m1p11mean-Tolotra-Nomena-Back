@@ -40,7 +40,7 @@ async function updateService(req, res) {
 async function deleteService(req, res) {
   try {
     const serviceId = req.params.id;
-
+    console.log(serviceId);
     await Service.findByIdAndUpdate(serviceId, {etat: 0});
 
     res.json({ message: 'Service supprimé avec succès' });
@@ -106,7 +106,7 @@ async function searchService(req, res) {
 
     res.json(services);
   } catch (error) {
-    res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message: error.message });
+    res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message: error });
   }
 }
 
