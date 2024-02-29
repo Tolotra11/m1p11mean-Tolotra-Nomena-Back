@@ -85,3 +85,16 @@ exports.findAll =async (req, res) => {
         res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({ message: error.message });
       }
 }
+
+exports.delete = async(req,res)=>{
+    try{
+        const offreId= req.params.id;
+        console.log(offreId);
+        await OffreSpecial.deleteOne({_id: offreId});
+        res.status(200).json({ message: 'offre spéciale supprimé avec succès' });
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).send({message:error.message});
+    }
+}

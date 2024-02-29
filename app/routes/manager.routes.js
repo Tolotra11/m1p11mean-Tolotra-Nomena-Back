@@ -6,7 +6,7 @@ module.exports = app => {
     const serviceController = require('../controllers/service.controller'); 
     const offreSpecial = require('../controllers/offreSpecial.controller');
     router.post('/offre_special',offreSpecial.create);
-
+    router.delete('/offre_specials/:id',offreSpecial.delete);
     router.post('/users',userController.registerEmploye);
     router.get("/users",userController.getUsers);
     router.get("/users/:id",userController.getUserById);
