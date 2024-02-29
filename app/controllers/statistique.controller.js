@@ -47,8 +47,6 @@ async function calculerTempsMoyenTravail(req, res) {
             nombreRdvsParEmployeParMois[idEmploye][mois]++;
         });
 
-        const nomsMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-
         const resultatFinal = [];
 
         for (const employeId in heuresTravailParEmployeParMois) {
@@ -65,7 +63,7 @@ async function calculerTempsMoyenTravail(req, res) {
                   console.log("Employé non trouvé");
                   return;
                 }
-                const nomEmploye = employe.nom;
+                const nomEmploye = employe.nom+' '+employe.prenom;
                 const employeData = {
                     employeId,
                     nomEmploye,

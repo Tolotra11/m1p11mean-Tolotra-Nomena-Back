@@ -33,7 +33,7 @@ var corsOptions = {
     });
 
   //Rappel tout les jours à 6 heure du matin
-  cron.schedule('0 6 * * *', () => {
+  cron.schedule('0 3 * * *', () => {
       console.log('reminder');
       try{
         reminder.sendReminder();

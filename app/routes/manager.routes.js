@@ -4,6 +4,8 @@ module.exports = app => {
     const tokenMiddleware = require('../middleware/token.middleware');
     const identifierMiddleware = require('../middleware/identifier.middleware'); 
     const serviceController = require('../controllers/service.controller'); 
+    const offreSpecial = require('../controllers/offreSpecial.controller');
+    router.post('/offre_special',offreSpecial.create);
 
     router.post('/users',userController.registerEmploye);
     router.get("/users",userController.getUsers);
