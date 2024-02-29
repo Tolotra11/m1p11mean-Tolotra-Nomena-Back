@@ -8,7 +8,7 @@ const reminder = require('./app/service/rappel.service');
 
 
 var corsOptions = {
-    origin: "http://localhost:4200"
+    origin: "https://m1p11mean-tolotra-nomena-front.onrender.com"
   };
   
   app.use(cors(corsOptions));
