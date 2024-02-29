@@ -2,6 +2,7 @@ const { ERROR_STATUS_CODE } = require("../constant/Error.constant");
 const db = require("../models");
 const Rdv = db.rdv;
 const Service = require('../models/service.model');
+const User = db.user;
 
 const getTask = async(req,res) =>{
   const idEmploye = req.decoded.userId;
@@ -226,9 +227,32 @@ const getIndisponibilite = async(req,res) =>{
       res.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:"Une erreur s'est produite lors de la récupération des rendez-vous avec les services :"+ error});
   }
 }
+const deleteRdv = async(request,response)=>{
+  try{
+      const idRdv=request.params.id;
+      await Rdv.deleteOne({_id:idRdv});
+      response.status(200).json({"message":"Suppression effectuée avec succès"});
+  }
+  catch(error){
+      response.status(ERROR_STATUS_CODE.INTERNAL_SERVER_ERROR).send({message:error.message});
+  }
+  
+}
 
+const currentProfil = async (request, response) => {
+  try {
+    const userId = request.decoded.userId;
+    const user = await User.findById(userId);
+    response.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
+  currentProfil,
+  deleteRdv,
   getIndisponibilite,
   validerRdv,
   getTask,

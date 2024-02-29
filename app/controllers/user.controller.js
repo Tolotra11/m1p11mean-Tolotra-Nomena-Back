@@ -268,6 +268,7 @@ exports.getActiveEmploye = async (request, response) => {
         response.send(500).send({message: error.message});
     }
 }
+
 exports.mailSender = (request, response) =>{
     // Envoyer l'e-mail
     try{

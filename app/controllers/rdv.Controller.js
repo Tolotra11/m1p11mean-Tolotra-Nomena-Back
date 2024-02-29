@@ -97,10 +97,9 @@ module.exports={
         })
     },
 
-
-
     deleteRdv(request,response){
-        const idRdv=request.query.idRdv;
+        const idRdv=request.query.id;
+        console.log(idRdv);
         const objectId = new ObjectId(idRdv);  
         models.rdv.deleteOne({_id:objectId}).exec()
         .then(res=>{
