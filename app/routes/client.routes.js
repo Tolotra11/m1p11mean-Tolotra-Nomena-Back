@@ -3,12 +3,11 @@ module.exports = app => {
     const router = require("express").Router();
     const tokenMiddleware = require('../middleware/token.middleware');
     const identifierMiddleware = require('../middleware/identifier.middleware'); 
-    const rdv = require('../controllers/rdv.controller');
     const horaireController = require('../controllers/horaire.controller');
     const preferenceEmploye = require("../controllers/preferenceEmploye.controller");
     const preferenceService = require("../controllers/preferenceService.controller");
     const offreSpecial = require('../controllers/offreSpecial.controller');
-    
+    const rdv = require('../controllers/rdv.controller');
 
     router.post('/rdv/emp',rdv.getListAvailableEmploye);
     router.post('/rdv/insert',rdv.setRdv);
