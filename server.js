@@ -55,7 +55,7 @@ var corsOptions = {
   require("./app/routes/employe.routes")(app);
   require("./app/routes/depense.routes")(app);
   require("./app/routes/statistique.routes")(app);
-  // set port, listen for requests
+  
   const PORT = process.env.PORT || 1672;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
